@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
+import { BotaoCadastro } from '../../../shared/components/botao-cadastro/botao-cadastro';
 
 @Component({
   selector: 'app-form-cadastro',
-  imports: [],
+  imports: [BotaoCadastro],
   templateUrl: './form-cadastro.html',
-  styleUrl: './form-cadastro.css'
+  styleUrl: './form-cadastro.css',
 })
 export class FormCadastro {
 
