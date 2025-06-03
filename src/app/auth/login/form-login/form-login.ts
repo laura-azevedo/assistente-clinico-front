@@ -2,10 +2,16 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-form-login',
-  imports: [],
   templateUrl: './form-login.html',
-  styleUrl: './form-login.css'
+  standalone: true,
+  styleUrls: ['./form-login.css']
 })
 export class FormLogin {
+  usuario: string = '';
+  senha: string = '';
 
+  onSubmit() {
+    console.log('Usuário:', this.usuario);
+    console.log('Senha:', this.senha);
+  }
 }

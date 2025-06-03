@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
+import { FormLogin } from './form-login/form-login';
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  standalone: true,
+  imports: [FormLogin],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrls: ['./login.css'],
 })
-export class Login {
-
-}
+export class Login {}
