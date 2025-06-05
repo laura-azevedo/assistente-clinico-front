@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Navbar } from '../shared/components/navbar/navbar';
 import { Header } from '../shared/components/header/header';
 
@@ -9,5 +9,11 @@ import { Header } from '../shared/components/header/header';
   styleUrl: './exames.css'
 })
 export class Exames {
+
+  @ViewChild(Navbar) navbar!: Navbar;
+
+  toggleNavbar(): void {
+    this.navbar.toggle();
+  }
 
 }
