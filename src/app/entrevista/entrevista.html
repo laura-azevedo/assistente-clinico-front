@@ -1,7 +1,13 @@
 <div class="flex">
     <app-navbar></app-navbar>
   
-    <div class="flex-1">
+    <div class="flex-1 flex flex-col">
       <app-header (menuClick)="toggleNavbar()"></app-header>
+
+      <div class="flex-grow flex items-center justify-center overflow-hidden gap-6">
+        <app-modal title="1. Entrevista"></app-modal>
+        <img src="/assets/microphone-icon.svg" class="w-12 h-12 cursor-pointer"
+        />
+      </div>
     </div>
   </div>
