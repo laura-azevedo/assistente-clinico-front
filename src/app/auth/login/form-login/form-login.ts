@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { BotaoLogin } from '../../../shared/components/botao-login/botao-login';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form-login',
@@ -9,6 +10,12 @@ import { BotaoLogin } from '../../../shared/components/botao-login/botao-login';
   imports: [BotaoLogin]
 })
 export class FormLogin {
+
+  constructor(private router: Router) {}
+
+  goToRegisterPage() {
+    this.router.navigate(['/cadastro']);
+  }
   usuario: string = '';
   senha: string = '';
 
