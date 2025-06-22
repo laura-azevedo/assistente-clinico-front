@@ -1,13 +1,40 @@
 <div class="flex">
-    <app-navbar></app-navbar>
-  
-    <div class="flex-1 flex flex-col">
-      <app-header (menuClick)="toggleNavbar()"></app-header>
+  <app-navbar></app-navbar>
 
-      <div class="flex-grow flex items-center justify-center overflow-hidden gap-6">
-        <app-modal title="1. Entrevista"></app-modal>
-        <img src="/assets/microphone-icon.svg" class="w-12 h-12 cursor-pointer"
+  <div class="flex-1 flex flex-col">
+    <app-header (menuClick)="toggleNavbar()"></app-header>
+
+    <div class="flex-grow flex flex-col items-center justify-center gap-6 overflow-hidden">
+
+      <div class="flex items-center w-full max-w-[860px] px-4">
+        <div class="flex-1">
+          <app-modal title="1. Entrevista"></app-modal>
+        </div>
+
+        <img
+          src="/assets/microphone-icon.svg"
+          class="ml-4 w-10 h-10 cursor-pointer flex-shrink-0"
+          (click)="startListening()"
         />
       </div>
+
+      <div class="flex items-center gap-2 max-w-[700px] w-full px-4">
+        <input
+          class="flex-1 border rounded px-3 py-2"
+          type="text"
+          placeholder="Digite sua pergunta…"
+          [(ngModel)]="typedQuestion"
+          (keyup.enter)="sendTypedQuestion()"
+        />
+
+        <button
+          class="bg-blue-600 text-white px-4 py-2 rounded"
+          (click)="sendTypedQuestion()"
+        >
+          Enviar
+        </button>
+      </div>
+
     </div>
   </div>
+</div>
