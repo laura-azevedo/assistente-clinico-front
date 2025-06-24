@@ -94,16 +94,27 @@ export class Hipotese {
   }
 
   private playAudio(texto: string) {
-    const synth = window.speechSynthesis;
-    if (!synth) {
-      console.warn('SpeechSynthesis não suportado');
-      return;
-    }
-
-    const utterance = new SpeechSynthesisUtterance(texto);
-    utterance.lang = 'pt-BR';
-    synth.speak(utterance);
+  const synth = window.speechSynthesis;
+  if (!synth) {
+    console.warn('SpeechSynthesis não suportado');
+    return;
   }
+
+  const voices = synth.getVoices();
+  if (!voices.length) {
+    synth.onvoiceschanged = () => this.playAudio(texto);
+    return;
+  }
+
+  const utterance = new SpeechSynthesisUtterance(texto);
+  utterance.lang = 'pt-BR';
+  utterance.rate = 1.4;
+
+  const femaleVoice = voices.find(voice => voice.name === 'Microsoft Maria - Portuguese (Brazil)');
+  if (femaleVoice) utterance.voice = femaleVoice;
+
+  synth.speak(utterance);
+}
 
   closeModal() {
     this.closed.emit();
