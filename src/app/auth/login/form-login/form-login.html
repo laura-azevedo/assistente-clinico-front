@@ -1,5 +1,5 @@
 <div class="flex justify-center items-center flex-col w-full lg:col-span-3 gap-3 rounded-lg relative">
-    <form class="flex justify-center items-center flex-col w-2/3 gap-3 mt-24">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex justify-center items-center flex-col w-2/3 gap-3 mt-24">
         <h6 class="poppins text-slate-900 text-2xl">Login</h6>
 
         <div class="poppins flex flex-col w-full mb-6">
@@ -7,7 +7,7 @@
             <input
                 type="email"
                 id="usuario"
-                name="usuario"
+                formControlName="email"
                 placeholder="Usuário (e-mail)"
                 class="border-b border-gray-300 bg-transparent p-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
                 name="usuario"
@@ -16,14 +16,14 @@
         </div>
 
         <div class="poppins flex flex-col w-full mb-6">
-            <label for="senha" class="sr-only">Senha</label>
+            <label for="password" class="sr-only">Senha</label>
             <input
                 type="password"
-                id="senha"
-                name="senha"
+                id="password"
+                formControlName="password"
                 placeholder="Senha"
                 class="border-b border-gray-300 bg-transparent p-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:border-gray-500"
-                name="senha"
+                name="password"
                 required
             />
         </div>
@@ -34,4 +34,5 @@
         </div>
 
     </form>
+    <p *ngIf="errorMessage" class="text-red-500 text-sm mt-2">{{ errorMessage }}</p>
 </div>
