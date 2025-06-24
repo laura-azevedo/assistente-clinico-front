@@ -54,7 +54,6 @@ export class Entrevista implements OnInit {
 
     this.recognition.onresult = (event: any) => {
       const transcript = event.results[event.results.length - 1][0].transcript.trim();
-      console.log('Transcrição:::', transcript);
 
       this.ngZone.run(() => {
         this.sendQuestion(transcript);
@@ -62,7 +61,7 @@ export class Entrevista implements OnInit {
     };
 
     this.recognition.onerror = (event: any) => {
-      console.error('Erro no reconhecimento da voz:', event.error);
+      console.error('Erro no reconhecimento da voz: ', event.error);
     };
 
     this.recognition.onend = () => {
@@ -74,14 +73,12 @@ export class Entrevista implements OnInit {
 
   startListening() {
     if (!this.recognition) {
-      console.log('Testando 1')
       this.setupSpeechRecognition();
     }
 
     this.isListening = true;
     this.finished = false;
     this.recognition.start();
-    console.log('------ Início - reconhecimento de vooz');
   }
 
   sendQuestion(pergunta: string) {
@@ -121,7 +118,6 @@ export class Entrevista implements OnInit {
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
     utterance.lang = 'pt-BR';
-    console.log('UTTERANCE: ', utterance)
     synth.speak(utterance);
   }
 

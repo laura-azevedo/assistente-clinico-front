@@ -77,7 +77,6 @@ export class Hipotese {
 
     this.recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript.trim();
-      console.log('Transcrição (Hipótese):', transcript);
 
       this.ngZone.run(() => {
         this.hipotese = transcript;

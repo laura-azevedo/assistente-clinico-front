@@ -29,21 +29,17 @@ export class FormLogin {
   }
 
   onSubmit() {
-    console.log('Teste 1')
     if (this.loginForm.valid) {
-      console.log('Teste 2')
       this.authService.login(this.loginForm.value).subscribe({
         next: (res: any) => {
           localStorage.setItem('token', res.access_token);
           this.router.navigate(['/entrevista']);
         },
         error: (err) => {
-          console.log('Teste 4')
           this.errorMessage = 'Email ou senha inválidos';
         }
       });
     }
-    console.log('Teste 3')
   }
 
   goToRegisterPage() {
