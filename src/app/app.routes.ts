@@ -5,6 +5,7 @@ import { Entrevista } from './entrevista/entrevista';
 import { Exames } from './exames/exames';
 import { ExamesComplementares } from './exames-complementares/exames-complementares';
 import { CasoConfig } from './caso-config/caso-config';
+import { Hipotese } from './hipotese/hipotese';
 
 export const routes: Routes = [
   { path: '', component: Login },
@@ -12,5 +13,6 @@ export const routes: Routes = [
   { path: 'entrevista', component: Entrevista },
   { path: 'exames', component: Exames},
   { path: 'exames-complementares', component: ExamesComplementares},
-  { path: 'configuracao-caso', component: CasoConfig }
+  { path: 'configuracao-caso', component: CasoConfig },
+  { path: 'entrevista/hipotese', component: Hipotese}
 ];
