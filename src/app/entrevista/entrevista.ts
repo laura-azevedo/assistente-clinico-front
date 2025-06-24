@@ -6,11 +6,13 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
+import { Hipotese } from '../hipotese/hipotese';
 
 @Component({
   selector: 'app-entrevista',
   standalone: true,
-  imports: [Navbar, Header, Modal, FormsModule],
+  imports: [Navbar, Header, Modal, FormsModule, Hipotese],
   templateUrl: './entrevista.html',
   styleUrls: ['./entrevista.css']
 })
@@ -19,13 +21,15 @@ export class Entrevista implements OnInit {
 
   private recognition!: any;
   private isListening: boolean = false;
-  private encerrado: boolean = false;
-  private idAtendimento!: string;
+  private finished: boolean = false;
+  private idInterview!: string;
+  public openWindow = false;
+
 
   typedQuestion: string = '';
 
-  constructor(private http: HttpClient, private ngZone: NgZone) {
-    this.idAtendimento = uuidv4();
+  constructor(private http: HttpClient, private ngZone: NgZone, private router: Router) {
+    this.idInterview = uuidv4();
   }
 
   ngOnInit() {
@@ -50,7 +54,7 @@ export class Entrevista implements OnInit {
 
     this.recognition.onresult = (event: any) => {
       const transcript = event.results[event.results.length - 1][0].transcript.trim();
-      console.log('Transcrição:', transcript);
+      console.log('Transcrição:::', transcript);
 
       this.ngZone.run(() => {
         this.sendQuestion(transcript);
@@ -58,11 +62,11 @@ export class Entrevista implements OnInit {
     };
 
     this.recognition.onerror = (event: any) => {
-      console.error('Erro no reconhecimento:', event.error);
+      console.error('Erro no reconhecimento da voz:', event.error);
     };
 
     this.recognition.onend = () => {
-      if (!this.encerrado && this.isListening) {
+      if (!this.finished && this.isListening) {
         this.recognition.start();
       }
     };
@@ -70,31 +74,34 @@ export class Entrevista implements OnInit {
 
   startListening() {
     if (!this.recognition) {
+      console.log('Testando 1')
       this.setupSpeechRecognition();
     }
 
     this.isListening = true;
-    this.encerrado = false;
+    this.finished = false;
     this.recognition.start();
-    console.log('Início - reconhecimento de vooz');
+    console.log('------ Início - reconhecimento de vooz');
   }
 
   sendQuestion(pergunta: string) {
     const payload = {
       pergunta: pergunta,
-      id_atendimento: this.idAtendimento
+      id_atendimento: this.idInterview
     };
 
     this.http
-    .post<{ resposta: string; encerrar: boolean }>(`${environment.apiUrl}/atendimento/entrevista`, payload)
+    .post<{ textAnswer: string; finish: boolean }>(`${environment.apiUrl}/atendimento/entrevista`, payload)
     .subscribe({
-      next: ({ resposta, encerrar }) => {
-      this.textToSpeechConverter(resposta);
+      next: ({ textAnswer, finish }) => {
+      this.textToSpeechConverter(textAnswer);
 
-      if (encerrar) {
-        this.encerrado  = true;
+      if (finish) {
+        this.finished  = true;
         this.isListening = false;
         this.recognition?.stop();
+        this.openWindow = true;
+
       }
     },
     error: err => console.error('Erro - HTTP:', err)
@@ -116,5 +123,10 @@ export class Entrevista implements OnInit {
     utterance.lang = 'pt-BR';
     console.log('UTTERANCE: ', utterance)
     synth.speak(utterance);
+  }
+
+  closeWindow() {
+    this.openWindow = false;
+    this.router.navigate(['/exames']);
   }
 }
