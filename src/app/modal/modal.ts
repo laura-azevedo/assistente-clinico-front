@@ -11,6 +11,8 @@ export class Modal {
 
   @Input() title: string = 'Título padrão';
   @Input() fase: string = '';
+  @Input() interviewHistory: { question: string, answer: string }[] = [];
+
 
   mensagens: string[] = [];
 
@@ -25,7 +27,7 @@ export class Modal {
 
     }
     if (exame === 'pulmões') {
-            this.mensagens.push("O exame do aparelho respiratório do paciente apresenta murmúrio vesicular universalmente audível, sem ruídos adventícios.")
+      this.mensagens.push("O exame do aparelho respiratório do paciente apresenta murmúrio vesicular universalmente audível, sem ruídos adventícios.")
       return;
     }
 
@@ -39,10 +41,4 @@ export class Modal {
       return;
     }
   }
-
-  // p fazer teste
-  // mockHistorico = Array.from({ length: 20 }, (_, i) => ({
-  //   titulo: `Pergunta ${i + 1}`,
-  //   descricao: `Resposta fornecida para a pergunta ${i + 1}.`
-  // }));
 }

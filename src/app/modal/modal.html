@@ -59,11 +59,11 @@
 
   </div>
 
-
-  <!-- <div *ngIf="fase !== 'exames'">
-    <div *ngFor="let item of mockHistorico" class="bg-white rounded-lg p-4 shadow">
-      <p class="text-[#0D334D] font-semibold">{{ item.titulo }}</p>
-      <p class="text-sm text-gray-700 mt-1">{{ item.descricao }}</p>
+  <div *ngIf="fase === 'entrevista'">
+    <div *ngFor="let item of interviewHistory" class="bg-white rounded-lg p-4 shadow">
+      <p class="text-[#0D334D] font-semibold">Você: {{ item.question }}</p>
+      <p class="text-sm text-gray-700 mt-1">Paciente: {{ item.answer }}</p>
     </div>
-  </div> -->
+  </div>
+
 </div>

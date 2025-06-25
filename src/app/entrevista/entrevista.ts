@@ -28,6 +28,8 @@ export class Entrevista implements OnInit {
 
   typedQuestion: string = '';
 
+  interviewHistory: { question: string, answer: string }[] = [];
+
   constructor(private http: HttpClient, private ngZone: NgZone, private router: Router) {
     this.idInterview = uuidv4();
   }
@@ -81,9 +83,9 @@ export class Entrevista implements OnInit {
     this.recognition.start();
   }
 
-  sendQuestion(pergunta: string) {
+  sendQuestion(question: string) {
     const payload = {
-      pergunta: pergunta,
+      question: question,
       id_atendimento: this.idInterview
     };
 
@@ -91,6 +93,8 @@ export class Entrevista implements OnInit {
     .post<{ textAnswer: string; finish: boolean }>(`${environment.apiUrl}/atendimento/entrevista`, payload)
     .subscribe({
       next: ({ textAnswer, finish }) => {
+        console.log('teste3 Resposta: ', textAnswer)
+        this.interviewHistory.push({ question, answer: textAnswer })
       this.textToSpeechConverter(textAnswer);
 
       if (finish) {
