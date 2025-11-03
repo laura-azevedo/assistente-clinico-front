@@ -1,0 +1,9 @@
+<div class="flex items-center justify-center gap-4 ml-4">
+  <img
+    src="/assets/microphone-icon.svg"
+    class="w-10 h-10 cursor-pointer flex-shrink-0"
+    [class.animate-pulse]="isListening"
+    (click)="startListening()"
+    title="Clique para falar"
+  />
+</div>
