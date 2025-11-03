@@ -2,11 +2,75 @@
   <app-navbar></app-navbar>
 
   <div class="flex-1 flex flex-col">
-    
     <app-header (menuClick)="toggleNavbar()"></app-header>
-    <div class="flex-grow flex items-center justify-center overflow-hidden">
 
-      <app-modal title="2. Exames Físicos" fase="exames"></app-modal>
+    <div class="flex-grow flex flex-col items-center justify-center gap-6 overflow-hidden">
+
+      <div class="relative">
+
+        <app-modal title="2. Exames Físicos">
+          <div class="relative w-full max-w-[500px] h-full mx-auto flex items-center justify-center">
+            <img
+              src="/assets/exames/exame_fisico_masculino.JPG"
+              alt="Imagem do exame"
+              class="max-h-full max-w-full rounded-xl object-contain"
+            />
+
+            <div
+              (click)="clickExame('cardiovascular')"
+              class="absolute cursor-pointer rounded-full bg-transparent"
+              style="top: 28%; left: 50%; width: 8%; height: 8%;"
+              title="Coração"
+            ></div>
+
+            <div
+              (click)="clickExame('Pressão arterial/frequência cardíaca')"
+              class="absolute cursor-pointer"
+              style="top: 33%; left: 58%; width: 7%; height: 8%;"
+              title="Pressão arterial/frequência cardíaca"
+            ></div>
+
+            <div
+              (click)="clickExame('pulmões')"
+              class="absolute cursor-pointer"
+              style="top: 25%; left: 41%; width: 7%; height: 13%;"
+              title="Pulmões"
+            ></div>
+
+            <div
+              (click)="clickExame('abdome')"
+              class="absolute cursor-pointer"
+              style="top: 38%; left: 45%; width: 12%; height: 10%;"
+              title="Abdome"
+            ></div>
+          </div>
+
+          <div *ngIf="messages.length > 0" class="space-y-2 mt-4 w-full px-4">
+            <div
+              *ngFor="let msg of messages"
+              class="text-sm text-blue-900 bg-white p-2 rounded shadow"
+            >
+              {{ msg }}
+            </div>
+          </div>
+        </app-modal> 
+
+        <div *ngIf="enableButton" class="absolute top-1/2 -right-[120px] transform -translate-y-1/2">
+          <button
+            (click)="openModal()"
+            class="bg-[#0D334D] text-white px-4 py-2 rounded text-sm hover:opacity-90"
+          >
+            Avaliar
+          </button>
+        </div>
+
+      </div>
+
+      <app-hipotese
+        [isOpen]="isOpened"
+        [fase]="'exames'"
+        >
+      </app-hipotese>
 
     </div>
   </div>

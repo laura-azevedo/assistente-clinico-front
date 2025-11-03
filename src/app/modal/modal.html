@@ -2,68 +2,9 @@
   {{ title }}
 </h2>
 
-<div
-  class="w-[80vw] h-[70vh] max-w-[800px] max-h-[800px] border-4 
-  border-[#0D334D] rounded-3xl bg-[rgba(211,211,211,0.3)] mx-auto 
-  overflow-y-auto p-6 space-y-4">
-
-  <div *ngIf="fase === 'exames'" class="w-full max-w-full mx-auto space-y-4">
-
-  <div class="relative w-full">
-    <img
-      src="/assets/exames/exame_fisico_masculino.JPG"
-      alt="Imagem do exame"
-      class="max-h-[500px] w-full h-auto mx-auto rounded-xl object-contain"
-    />
-
-
-    <div
-        (click)="click('cardiovascular')"
-        class="absolute cursor-pointer rounded-full bg-transparent"
-        style="top: 28%; left: 50%; width: 8%; height: 8%;"
-        title="Coração"
-    ></div>
-
-    <div
-      (click)="click('Pressão arterial/frequência cardíaca')"
-      class="absolute cursor-pointer"
-      style="top: 33%; left: 58%; width: 7%; height: 8%;"
-      title="Pressão arterial/frequência cardíaca">
-    </div>
-
-    <div
-      (click)="click('pulmões')"
-      class="absolute cursor-pointer"
-      style="top: 25%; left: 41%; width: 7%; height: 13%;"
-      title="Pulmões">
-    </div>
-
-    <div
-      (click)="click('abdome')"
-      class="absolute cursor-pointer"
-      style="top: 38%; left: 45%; width: 12%; height: 10%;"
-      title="Abdome">
-    </div>
-
-  </div>
-
-  <div *ngIf="mensagens.length > 0" class="space-y-2">
-    <div
-      *ngFor="let msg of mensagens"
-      class="text-sm text-blue-900 bg-white p-2 rounded shadow"
-    >
-      {{ msg }}
-    </div>
-      <!-- <audio *ngIf="audioSrc" [src]="audioSrc" controls class="mt-2 w-full"></audio> -->
-  </div>
-
-  </div>
-
-  <div *ngIf="fase === 'entrevista'">
-    <div *ngFor="let item of interviewHistory" class="bg-white rounded-lg p-4 shadow">
-      <p class="text-[#0D334D] font-semibold">Você: {{ item.question }}</p>
-      <p class="text-sm text-gray-700 mt-1">Paciente: {{ item.answer }}</p>
-    </div>
-  </div>
-
+<div class="w-[80vw] h-[70vh] max-w-[800px] max-h-[800px] border-4 
+border-[#0D334D] rounded-3xl bg-[rgba(211,211,211,0.3)] mx-auto 
+overflow-y-auto p-6 space-y-4"
+>
+  <ng-content></ng-content>
 </div>
