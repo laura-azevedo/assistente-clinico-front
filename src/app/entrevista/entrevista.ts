@@ -1,115 +1,80 @@
-import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, NgZone, AfterViewInit } from '@angular/core';
 import { Navbar } from '../shared/components/navbar/navbar';
 import { Header } from '../shared/components/header/header';
 import { Modal } from '../modal/modal';
-import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
-import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { Hipotese } from '../hipotese/hipotese';
+import { Microphone } from '../shared/components/microphone/microphone';
+import { CommonModule } from '@angular/common';
+import { EntrevistaService } from './services/entrevista.service';
+import { EntrevistaRequest, EntrevistaResponse } from './models/entrevista.model';
+import { speak } from '../shared/utils/utils';
 
 @Component({
   selector: 'app-entrevista',
   standalone: true,
-  imports: [Navbar, Header, Modal, FormsModule, Hipotese],
+  imports: [CommonModule, Navbar, Header, Modal, FormsModule, Hipotese, Microphone],
   templateUrl: './entrevista.html',
   styleUrls: ['./entrevista.css']
 })
-export class Entrevista implements OnInit {
+export class Entrevista implements OnInit, AfterViewInit {
   @ViewChild(Navbar) navbar!: Navbar;
+  @ViewChild(Microphone) microphone!: Microphone;
 
-  private recognition!: any;
-  private isListening: boolean = false;
-  private finished: boolean = false;
-  private idInterview!: string;
+  private idInterview: string = '';
   public openWindow = false;
+  public typedQuestion: string = '';
+  public interviewHistory: { question: string; answer: string }[] = [];
+  public waitingLLMResult = false;
 
-
-  typedQuestion: string = '';
-
-  interviewHistory: { question: string, answer: string }[] = [];
-
-  constructor(private http: HttpClient, private ngZone: NgZone, private router: Router) {
+  constructor( private entrevistaService: EntrevistaService, private router: Router) {
     this.idInterview = uuidv4();
   }
 
-  ngOnInit() {
-    this.setupSpeechRecognition();
+  ngOnInit() {}
+
+  ngAfterViewInit() {
+    this.microphone.send.subscribe((text: string) => {
+      this.sendQuestion(text);
+    });
   }
 
   toggleNavbar(): void {
     this.navbar.toggle();
   }
 
-  setupSpeechRecognition() {
-    const SpeechRecognitionClass = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognitionClass) {
-      alert('O Speech Recognition não é suportado neste navegador.');
-      return;
-    }
+  sendQuestion(question: string) { 
+    console.log('SendQuestion: ', question);
+    this.waitingLLMResult = true;
 
-    this.recognition = new SpeechRecognitionClass();
-    this.recognition.lang = 'pt-BR';
-    this.recognition.continuous = true;
-    this.recognition.interimResults = false;
-
-    this.recognition.onresult = (event: any) => {
-      const transcript = event.results[event.results.length - 1][0].transcript.trim();
-
-      this.ngZone.run(() => {
-        this.sendQuestion(transcript);
-      });
-    };
-
-    this.recognition.onerror = (event: any) => {
-      console.error('Erro no reconhecimento da voz: ', event.error);
-    };
-
-    this.recognition.onend = () => {
-      if (!this.finished && this.isListening) {
-        this.recognition.start();
-      }
-    };
-  }
-
-  startListening() {
-    if (!this.recognition) {
-      this.setupSpeechRecognition();
-    }
-
-    this.isListening = true;
-    this.finished = false;
-    this.recognition.start();
-  }
-
-  sendQuestion(question: string) {
-    const payload = {
-      question: question,
+    const payload: EntrevistaRequest = {
+      question,
       id_atendimento: this.idInterview
-    };
+    }; 
 
-    this.http
-    .post<{ textAnswer: string; finish: boolean }>(`${environment.apiUrl}/atendimento/entrevista`, payload)
-    .subscribe({
-      next: ({ textAnswer, finish }) => {
-        console.log('teste3 Resposta: ', textAnswer)
-        this.interviewHistory.push({ question, answer: textAnswer })
-      this.textToSpeechConverter(textAnswer);
+    this.entrevistaService.enviarPergunta(payload).subscribe({
+      next: ({ textAnswer, finish }: EntrevistaResponse) => {
+        console.log('Resposta: ', textAnswer);
+        this.interviewHistory.push({ question, answer: textAnswer });
+        speak(textAnswer)
 
-      if (finish) {
-        this.finished  = true;
-        this.isListening = false;
-        this.recognition?.stop();
-        this.openWindow = true;
+        this.waitingLLMResult = false;
 
+        if (finish) {
+          console.log('abriu')
+          this.openWindow = true;
+        }
+      },
+      error: err => {
+        console.error('Erro - HTTP:', err);
+        this.waitingLLMResult = false;
       }
-    },
-    error: err => console.error('Erro - HTTP:', err)
-  });
-
+    });
   }
 
+  //TODO: ver dps
   sendTypedQuestion() {
     const question = this.typedQuestion.trim();
     if (question) {
@@ -118,15 +83,7 @@ export class Entrevista implements OnInit {
     }
   }
 
-  textToSpeechConverter(texto: string) {
-    const synth = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(texto);
-    utterance.lang = 'pt-BR';
-    synth.speak(utterance);
-  }
-
-  closeWindow() {
-    this.openWindow = false;
-    this.router.navigate(['/exames']);
+  armazenarResposta(resposta: string) {
+    console.log('Usuário respondeu:', resposta);
   }
 }

@@ -8,19 +8,31 @@
 
       <div class="flex items-center w-full max-w-[860px] px-4">
         <div class="flex-1">
-          <app-modal
-            title="1. Entrevista"
-            [fase]="'entrevista'"
-            [interviewHistory]="interviewHistory">
+
+          <app-modal title="1. Entrevista"> 
+            <div *ngIf="interviewHistory.length === 0 && !waitingLLMResult" class="flex flex-col items-center justify-center h-full text-center px-4">
+              <p class="text-[#0D334D] text-xl font-semibold">
+                Clique no microfone ou digite algo para começar o atendimento
+              </p>
+              <p>Para finalizar a entrevista, diga ou escreva "Encerrar atendimento".</p>
+            </div>
+
+            <!-- lembrar de colocar na fase 3 dps -->
+            <div *ngFor="let item of interviewHistory" class="bg-white rounded-lg p-4 shadow mb-4">
+              <p class="text-[#0D334D] font-semibold">Você: {{ item.question }}</p>
+              <p class="text-sm text-gray-700 mt-1">Paciente: {{ item.answer }}</p>
+            </div>
+
+            <div *ngIf="waitingLLMResult" class="text-center">
+              <p class="text-[#0D334D] text-3xl font-semibold animate-pulse ">...</p>
+              
+            </div>
+
           </app-modal>
         </div>
 
-        <img
-          src="/assets/microphone-icon.svg"
-          class="ml-4 w-10 h-10 cursor-pointer flex-shrink-0"
-          (click)="startListening()"
-        />
-      </div>
+        <app-microphone></app-microphone>
+      </div> 
 
       <div class="flex items-center gap-2 max-w-[700px] w-full px-4">
         <input
@@ -31,14 +43,17 @@
           (keyup.enter)="sendTypedQuestion()"
         />
 
-        <button
+        <button 
           class="bg-[#0D334D] text-white px-4 py-2 rounded"
-          (click)="sendTypedQuestion()"
-        >
+          (click)="sendTypedQuestion()">
           Enviar
         </button>
       </div>
-      <app-hipotese [isOpen]="openWindow" (closed)="closeWindow()"></app-hipotese>
+
+      <app-hipotese 
+        [isOpen]="openWindow" 
+        (respostaEnviada)="armazenarResposta($event)">
+      </app-hipotese>
 
     </div>
   </div>
