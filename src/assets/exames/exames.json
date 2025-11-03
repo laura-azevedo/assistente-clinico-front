@@ -1,0 +1,16 @@
+{
+  "cardiovascular": {
+    "mensagem": "O exame do precórdio (cardiovascular) do paciente indica ritmo cardíaco regular, em três tempos (B4), sem sopros.",
+    "audio": "/assets/exames/ausculta.MP3"
+  },
+  "pulmões": {
+    "mensagem": "O exame do aparelho respiratório do paciente apresenta murmúrio vesicular universalmente audível, sem ruídos adventícios.",
+    "audio": "/assets/exames/normal_breath_sounds.mp3"
+  },
+  "abdome": {
+    "mensagem": "O exame do abdome do paciente apresenta ruídos hidroaéreos universalmente audíveis, abdome indolor à palpação, sem massas ou visceromegalias."
+  },
+  "pressão arterial/frequência cardíaca": {
+    "mensagem": "O auxiliar mediu a pressão arterial (PA) do senhor José. O valor foi 170/80 mmHg, a frequência cardíaca foi de 98bpm e a frequência respiratória foi de 24 irpm. A saturação de oxigênio na oximetria digital foi de 94% em ar ambiente."
+  }
+}
