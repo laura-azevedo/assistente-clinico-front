@@ -1,38 +1,37 @@
 <div class="fixed inset-0 bg-black/80 flex items-center justify-center z-50" *ngIf="isOpen">
-  <div class="bg-white rounded-xl shadow-lg p-8 w-[90vw] h-auto max-w-[720px] text-center space-y-6">
-    <h2 class="text-2xl font-bold text-gray-800">
-      Qual a sua principal hipótese? Justifique.
-    </h2>
+  <div class="bg-white rounded-xl shadow-lg p-8 w-[90vw] max-h-[90vh] overflow-y-auto max-w-[720px] text-center space-y-6">
 
-    <div class="flex items-start gap-2 w-full px-2">
-      <textarea
-        class="flex-1 border border-gray-300 rounded px-3 py-2 text-sm resize-y min-h-[100px]"
-        placeholder="Digite sua hipótese:"
-        [(ngModel)]="hipotese"
-        (keyup.enter)="sendAnswer()"
-        [readonly]="isListening"
-      ></textarea>
-
-      <img
-        src="/assets/microphone-icon.svg"
-        class="ml-2 w-10 h-10 cursor-pointer flex-shrink-0 mt-2"
-        [class.animate-pulse]="isListening"
-        (click)="startListening()"
-        [title]="isListening ? 'Parar de ouvir' : 'Clique p/ falar'"
-        alt="Microfone"
-      />
+    <div *ngIf="isAnswerSaved" class="text-black font-medium text-lg">
+      {{ answerLLM }}
     </div>
 
-    <button
-      class="bg-[#0D334D] text-white px-4 py-2 rounded text-sm"
-      (click)="sendAnswer()"
-      [disabled]="isListening"
-    >
-      Enviar
-    </button>
+    <ng-container *ngIf="!isAnswerSaved">
+      <h2 class="text-2xl font-bold text-gray-800">
+        <ng-container [ngSwitch]="fase">
+          <span *ngSwitchCase="'entrevista'">Qual a sua principal hipótese diagnóstica até aqui? Justifique.</span>
+          <span *ngSwitchCase="'exames'">Após o exame físico do paciente, houve mudança na sua principal hipótese diagnóstica? Justifique.</span>
+          <span *ngSwitchCase="'exames-complementares'">Qual a sua principal hipótese diagnóstica final e como os exames complementares auxiliaram nessa hipótese? Justifique.</span>
+        </ng-container>
+      </h2>
 
-    <div *ngIf="answerLLM" class="mt-4 bg-gray-100 text-gray-800 p-4 rounded text-sm text-left">
-      {{ answerLLM }}
+      <div class="flex items-start gap-2 w-full px-2">
+        <textarea
+          class="flex-1 border border-gray-300 rounded px-3 py-2 text-sm resize-y min-h-[100px]"
+          placeholder="Digite sua hipótese:"
+          [(ngModel)]="hipotese"
+          (keyup.enter)="sendAnswer()"
+        ></textarea>
+
+        <app-microphone (send)="onMicrophoneResult($event)"></app-microphone>
+      </div>
+
+      <button class="bg-[#0D334D] text-white px-4 py-2 rounded text-sm" (click)="sendAnswer()">
+        Enviar
+      </button>
+    </ng-container>
+
+    <div *ngIf="fase === 'exames-complementares' && answerLLM" class="mt-4 bg-gray-100 text-gray-800 p-4 rounded text-sm text-left">
+      <pre class="whitespace-pre-wrap font-sans text-sm">{{ answerLLM }}</pre>
     </div>
   </div>
 </div>

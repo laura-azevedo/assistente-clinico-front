@@ -1,125 +1,100 @@
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, NgZone } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { Microphone } from '../shared/components/microphone/microphone';
+import { HipoteseService } from './services/hipotese.service';
+import { HipoteseRequest } from './models/hipotese.model';
+import { speak } from '../shared/utils/utils';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-hipotese',
-
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Microphone],
   templateUrl: './hipotese.html',
   styleUrls: ['./hipotese.css']
 })
 export class Hipotese {
   @Input() isOpen: boolean = false;
+  @Input() fase: 'entrevista' | 'exames' | 'exames-complementares' = 'entrevista';
   @Output() closed = new EventEmitter<void>();
+  @Output() respostaEnviada = new EventEmitter<string>();
+  
+  @ViewChild(Microphone) microphone!: Microphone;
 
-  hipotese = '';
-  answerLLM = '';
+  hipotese: string = '';
+  answerLLM: string = '';
+  isAnswerSaved: boolean = false;
+  isLoading: boolean = false;
 
-  private recognition!: any;
-  isListening: boolean = false;
+  constructor(private hipoteseService: HipoteseService, private router: Router) {}
 
-  constructor(private http: HttpClient, private ngZone: NgZone) {}
+  onMicrophoneResult(text: string) {
+    console.log('texto: ', text)
+    this.hipotese = text;
+  }
 
-  sendAnswer() {
-    if (!this.hipotese.trim()) return;
+  private handleIntermediatePhase() {
+    this.answerLLM = 'Sua resposta foi salva. A avaliação final ocorrerá após a etapa 3.';
+    this.isAnswerSaved = true;
 
-    this.answerLLM = 'Analisando sua resposta:';
+    setTimeout(() => {
+      const next = this.fase === 'entrevista' ? '/exames' : '/exames-complementares';
+      this.router.navigate([next]);
+    }, 3000);
+  }
 
-    this.http.post<{ comment: string }>(
-      `${environment.apiUrl}/atendimento/avaliar-hipotese`,
-      { user_answer: this.hipotese.trim() }
-    ).subscribe({
+  private evaluateFinalHypothesis() {
+    const payload: HipoteseRequest = {
+      etapa1: this.loadHypothesis('entrevista'),
+      etapa2: this.loadHypothesis('exames'),
+      etapa3: this.hipotese.trim()
+    };
+
+    this.answerLLM = 'Analisando sua resposta...';
+    this.isLoading = true;
+
+    this.hipoteseService.avaliarHipoteseFinal(payload).subscribe({
       next: (res) => {
         this.answerLLM = res.comment;
-        this.playAudio(this.answerLLM);
+        speak(res.comment);
+        this.isLoading = false;
       },
       error: (err) => {
+        console.error('[Hipotese] Erro ao avaliar:', err);
         this.answerLLM = 'Erro ao avaliar hipótese.';
-        console.error(err);
+        this.isLoading = false;
       }
     });
   }
 
-  startListening() {
-    if (!this.recognition) {
-      this.setupSpeechRecognition();
-    }
-
-    if (this.isListening) {
-      this.stopListening();
-      return;
-    }
-
-    this.isListening = true;
-    this.recognition.start();
+  private loadHypothesis(fase: string): string {
+    return localStorage.getItem(`hipotese-${fase}`) || '';
   }
 
-  stopListening() {
-    this.isListening = false;
-    this.recognition?.stop();
+  private saveHipotese(fase: string, value: string) {
+    localStorage.setItem(`hipotese-${fase}`, value);
   }
 
-  private setupSpeechRecognition() {
-    const SpeechRecognitionClass = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognitionClass) {
-      alert('O Reconhecimento de voz não é suportado neste navegador.');
-      return;
-    }
+  sendAnswer() {
+    const hipotese = this.hipotese.trim();
+    if (!hipotese) return;
 
-    this.recognition = new SpeechRecognitionClass();
-    this.recognition.lang = 'pt-BR';
-    this.recognition.continuous = false;
-    this.recognition.interimResults = false;
+    this.saveHipotese(this.fase, hipotese);
+    this.respostaEnviada.emit(hipotese);
 
-    this.recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript.trim();
-
-      this.ngZone.run(() => {
-        this.hipotese = transcript;
-      });
-    };
-
-    this.recognition.onerror = (event: any) => {
-      console.error('Erro no reconhecimento de voz:', event.error);
-      this.stopListening();
-    };
-
-    this.recognition.onend = () => {
-      this.isListening = false;
-    };
+    this.fase === 'exames-complementares'
+      ? this.evaluateFinalHypothesis()
+      : this.handleIntermediatePhase();
   }
 
-  private playAudio(texto: string) {
-  const synth = window.speechSynthesis;
-  if (!synth) {
-    console.warn('SpeechSynthesis não suportado');
-    return;
-  }
-
-  const voices = synth.getVoices();
-  if (!voices.length) {
-    synth.onvoiceschanged = () => this.playAudio(texto);
-    return;
-  }
-
-  const utterance = new SpeechSynthesisUtterance(texto);
-  utterance.lang = 'pt-BR';
-  utterance.rate = 1.4;
-
-  const femaleVoice = voices.find(voice => voice.name === 'Microsoft Maria - Portuguese (Brazil)');
-  if (femaleVoice) utterance.voice = femaleVoice;
-
-  synth.speak(utterance);
-}
-
+  // TODO: implementar dps
   closeModal() {
     this.closed.emit();
     this.hipotese = '';
     this.answerLLM = '';
-    this.stopListening();
+    this.isAnswerSaved = false;
+    this.isLoading = false;
   }
 }
