@@ -12,6 +12,7 @@ export class BotaoSair {
   constructor(private router: Router) {}
 
   logout(): void {
-    this.router.navigate(['/'])
+    localStorage.removeItem('token');
+    this.router.navigate(['/login'])
   }
 }

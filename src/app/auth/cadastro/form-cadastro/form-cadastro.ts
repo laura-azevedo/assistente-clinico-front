@@ -39,7 +39,7 @@ export class FormCadastro {
           this.successMessage = 'Cadastro realizado com sucesso! Redirecionando para o login...';
           this.errorMessage = '';
           setTimeout(() => {
-            this.router.navigate(['/']);
+            this.router.navigate(['/login']);
           }, 2000);
         },
         error: (err) => {
@@ -54,6 +54,6 @@ export class FormCadastro {
   }
 
   goToLoginPage() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 }
