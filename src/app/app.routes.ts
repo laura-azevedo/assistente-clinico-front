@@ -7,9 +7,11 @@ import { ExamesComplementares } from './exames-complementares/exames-complementa
 // import { CasoConfig } from './caso-config/caso-config';
 import { Hipotese } from './hipotese/hipotese';
 import { AuthGuard } from './auth/guards/auth.guard';
+import { Home } from './shared/components/home/home';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
+  { path: 'home',  component: Home, canActivate: [AuthGuard]},
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'cadastro', component: Cadastro },
   { path: 'entrevista', component: Entrevista, canActivate: [AuthGuard] },
