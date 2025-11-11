@@ -32,8 +32,8 @@ export class FormLogin {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
         next: (res: any) => {
-          localStorage.setItem('token', res.access_token);
-          this.router.navigate(['/entrevista']);
+          localStorage.setItem('token', res.token);
+          this.router.navigate(['/home']);
         },
         error: (err) => {
           this.errorMessage = 'Email ou senha inválidos';
