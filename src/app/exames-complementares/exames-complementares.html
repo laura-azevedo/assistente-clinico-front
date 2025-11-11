@@ -15,8 +15,8 @@
               </p>
             </div>
             <div *ngFor="let item of history" class="bg-white rounded-lg p-4 shadow mb-4">
-              <p class="text-[#0D334D] font-semibold">Exame: {{ item.question }}</p>
-              <p class="mt-1">{{ item.answer }}</p>
+              <p class="text-[#0D334D] font-semibold">Exame: {{ item.name }}</p>
+              <p class="mt-1">{{ item.description }}</p>
               <img *ngIf="item.image" [src]="item.image" class="max-w-full rounded" />
             </div>
           </app-modal>
