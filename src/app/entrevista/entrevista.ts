@@ -3,14 +3,14 @@ import { Navbar } from '../shared/components/navbar/navbar';
 import { Header } from '../shared/components/header/header';
 import { Modal } from '../modal/modal';
 import { FormsModule } from '@angular/forms';
-import { v4 as uuidv4 } from 'uuid';
-import { Router } from '@angular/router';
 import { Hipotese } from '../hipotese/hipotese';
 import { Microphone } from '../shared/components/microphone/microphone';
 import { CommonModule } from '@angular/common';
 import { EntrevistaService } from './services/entrevista.service';
 import { EntrevistaRequest, EntrevistaResponse } from './models/entrevista.model';
 import { speak } from '../shared/utils/utils';
+import { AppointmentStateService } from '../shared/services/appointment.service';
+
 
 @Component({
   selector: 'app-entrevista',
@@ -23,14 +23,15 @@ export class Entrevista implements OnInit, AfterViewInit {
   @ViewChild(Navbar) navbar!: Navbar;
   @ViewChild(Microphone) microphone!: Microphone;
 
-  private idInterview: string = '';
   public openWindow = false;
   public typedQuestion: string = '';
   public interviewHistory: { question: string; answer: string }[] = [];
   public waitingLLMResult = false;
 
-  constructor( private entrevistaService: EntrevistaService, private router: Router) {
-    this.idInterview = uuidv4();
+  constructor( 
+    private entrevistaService: EntrevistaService, 
+    private appointmentState: AppointmentStateService
+) {
   }
 
   ngOnInit() {}
@@ -51,7 +52,7 @@ export class Entrevista implements OnInit, AfterViewInit {
 
     const payload: EntrevistaRequest = {
       question,
-      id_atendimento: this.idInterview
+      appointment_id: this.appointmentState.appointmentId
     }; 
 
     this.entrevistaService.enviarPergunta(payload).subscribe({

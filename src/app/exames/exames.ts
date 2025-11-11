@@ -6,6 +6,8 @@ import { Hipotese } from '../hipotese/hipotese';
 import { CommonModule } from '@angular/common';
 import examesData from '../../assets/exames/exames.json';
 import type { ExameInfo } from './models/exame.model';
+import { AppointmentStateService } from '../shared/services/appointment.service';
+import { PhysicalExamService } from './services/exames.service';
 
 @Component({
   selector: 'app-exames',
@@ -22,6 +24,11 @@ export class Exames {
   enableButton = false;
 
   examesData = examesData as Record<string, ExameInfo>;
+  
+  constructor(
+    private appointmentState: AppointmentStateService,
+    private physicalExamService: PhysicalExamService
+  ){}
 
   toggleNavbar(): void {
     this.navbar.toggle();
@@ -46,5 +53,21 @@ export class Exames {
       audio.volume = 1.0;
       audio.play();
     }
+
+    if (this.appointmentState.appointmentId) {
+      const payload = {
+        appointment_id: this.appointmentState.appointmentId,
+        exam_name: exame,
+        result_text: info.mensagem
+      };
+
+      this.physicalExamService.savePhysicalExam(payload).subscribe({
+        next: res => console.log('Exame salvo com sucesso:', res),
+        error: err => console.error('Erro ao salvar exame:', err)
+      });
+    } else {
+      console.error('appointment_id não definido (AppointmentStateService)');
+    }
+  
   }
 }
