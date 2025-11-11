@@ -27,7 +27,6 @@ export class Home {
   async startAppointment() {
   try {
     const token = localStorage.getItem('token');
-    console.log('O TOKEN É: ', localStorage.getItem('token'));
     const res: any = await this.http.post(
       `${environment.apiUrl}/entrevista/start`,
       {},
