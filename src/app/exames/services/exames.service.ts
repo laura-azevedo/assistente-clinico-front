@@ -2,23 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { EntrevistaRequest, EntrevistaResponse } from '../models/entrevista.model';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class EntrevistaService {
+@Injectable({ providedIn: 'root' })
+export class PhysicalExamService {
   constructor(private http: HttpClient) {}
 
-  enviarPergunta(payload: EntrevistaRequest): Observable<EntrevistaResponse> {
+  savePhysicalExam(payload: { appointment_id: string; exam_name: string; result_text?: string }): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    return this.http.post<EntrevistaResponse>(
-      `${environment.apiUrl}/entrevista`,
-      payload,
-      {headers}
+    return this.http.post(`${environment.apiUrl}/physical-exam`, payload, {headers}
     );
   }
 }
