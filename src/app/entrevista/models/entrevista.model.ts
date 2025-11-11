@@ -1,5 +1,5 @@
 export interface EntrevistaRequest {
-  id_atendimento: string;
+  appointment_id: string;
   question: string;
 }
 

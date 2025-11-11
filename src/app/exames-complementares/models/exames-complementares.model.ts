@@ -1,5 +1,5 @@
 export interface ExameComplementar {
-  question: string;
-  answer: string;
+  name: string,
+  description: string;
   image?: string;
 }
