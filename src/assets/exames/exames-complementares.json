@@ -1,0 +1,61 @@
+[
+  {
+    "name": "troponina i",
+    "description": "Valor sérico do paciente: 0,01 ng/mL (Valor de referência até 0,03 ng/mL)."
+  },
+  {
+    "name": "troponina t",
+    "description": "Valor sérico do paciente: 0,05 ng/mL (Valor de referência até 0,1 ng/mL)."
+  },
+  {
+    "name": "troponina alta sensibilidade",
+    "description": "Valor sérico do paciente: 33 ng/L (Valor de referência até 14 ng/L)."
+  },
+  {
+    "name": "ck total",
+    "description": "Valor sérico do paciente: 150 U/L (Valor de referência: 38–174 U/L)."
+  },
+  {
+    "name": "ckmb",
+    "description": "Valor sérico do paciente: 17 U/L (Valor de referência até 24 U/L)."
+  },
+  {
+    "name": "hemograma",
+    "description": "Hematócrito: 43% (VR: 35–45%)\nHemoglobina: 16 g/dL (VR: 12–18 g/dL)\nLeucócitos: 5000/mm³ (VR: 4500–12000/mm³)\nPlaquetas: 250000/mm³ (VR: 150000–450000/mm³)"
+  },
+  {
+    "name": "creatinina",
+    "description": "Creatinina sérica dentro da normalidade."
+  },
+  {
+    "name": "ureia",
+    "description": "Ureia sérica dentro da normalidade."
+  },
+  {
+    "name": "sódio",
+    "description": "Sódio sérico dentro da normalidade."
+  },
+  {
+    "name": "potássio",
+    "description": "Potássio sérico dentro da normalidade."
+  },
+  {
+    "name": "gasometria",
+    "description": "Gasometria arterial ou venosa dentro da normalidade."
+  },
+  {
+    "name": "eletrocardiograma",
+    "image": "/assets/exames/eletro.png",
+    "description": "Ritmo sinusal, supradesnível de segmento ST entre V2 e V6, DI e aVL (infarto anterior extenso). Infradesnível de ST em DIII e aVF. Taquicardia ventricular não sustentada entre DIII e aVF."
+  },
+  {
+    "name": "radiografia",
+    "image": "/assets/exames/radiografiatorax.png",
+    "description": "Radiografia de tórax disponível."
+  },
+  {
+    "name": "radiografia de tórax",
+    "image": "/assets/exames/radiografiatorax.png",
+    "description": "Radiografia de tórax disponível."
+  }
+]
