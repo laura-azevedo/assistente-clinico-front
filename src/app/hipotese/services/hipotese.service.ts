@@ -8,11 +8,20 @@ import { HipoteseRequest, HipoteseResponse } from '../models/hipotese.model';
   providedIn: 'root'
 })
 export class HipoteseService {
-  private baseUrl = `${environment.apiUrl}/atendimento`;
+  private baseUrl = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient) {}
 
+  salvarHipoteseEntrevista(interview_id: string, user_hypothesis: string): Observable<any> {
+      console.log('[FRONT] Enviando para backend:', { interview_id, user_hypothesis });
+
+    return this.http.post(`${this.baseUrl}/hypothesis/interview`, {
+      interview_id,
+      user_hypothesis,
+    });
+  }
+
   avaliarHipoteseFinal(payload: HipoteseRequest): Observable<HipoteseResponse> {
-    return this.http.post<HipoteseResponse>(`${this.baseUrl}/avaliar-hipotese-final`, payload);
+    return this.http.post<HipoteseResponse>(`${this.baseUrl}/evaluator`, payload);
   }
 }

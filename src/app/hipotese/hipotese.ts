@@ -84,6 +84,18 @@ export class Hipotese {
     this.saveHipotese(this.fase, hipotese);
     this.respostaEnviada.emit(hipotese);
 
+    if (this.fase === 'entrevista') {
+      const interview_id = localStorage.getItem('interview_id');
+
+    if (interview_id) {
+      this.hipoteseService.salvarHipoteseEntrevista(interview_id, hipotese).subscribe({
+        next: () => console.log('Hipótese da entrevista salva no backend'),
+        error: (err) => console.error('Erro ao salvar hipótese da entrevista:', err)
+      });
+    }
+  }
+
+
     this.fase === 'exames-complementares'
       ? this.evaluateFinalHypothesis()
       : this.handleIntermediatePhase();
