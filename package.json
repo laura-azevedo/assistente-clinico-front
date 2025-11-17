@@ -19,6 +19,7 @@
     "@angular/router": "^20.0.0",
     "@tailwindcss/postcss": "^4.1.8",
     "@types/dom-speech-recognition": "^0.0.6",
+    "jwt-decode": "^4.0.0",
     "ngx-file-drop": "^16.0.0",
     "ngx-toastr": "^19.0.0",
     "postcss": "^8.5.4",
