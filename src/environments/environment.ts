@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://127.0.0.1:3000'
+  apiUrl: 'https://assistente-clinico-node.onrender.com'
+  // apiUrl: 'http://127.0.0.1:3000'
     // apiUrl: 'http://127.0.0.1:8080'
 };
