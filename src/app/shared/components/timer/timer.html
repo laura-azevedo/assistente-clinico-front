@@ -1,0 +1,17 @@
+<div class="flex justify-center items-center my-12 p-4">
+  <div
+    class="relative grid aspect-square size-[75px] place-content-center rounded-full"
+    [ngStyle]="{'background': 'conic-gradient(#D7D7D7 ' + (100 - progress) + '%, ' + progressColor + ' 0)'}">
+
+    <div class=
+      "flex aspect-square size-[65px] justify-center items-center rounded-full
+      bg-white text-base font-medium text-[#333333] tabular-nums">
+
+        <span [ngClass]="{ 'blink': isBlinking }">
+        
+        {{ remainingTime.minutes }}:{{ remainingTime.seconds }}
+
+      </span>
+    </div>
+  </div>
+</div>

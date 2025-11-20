@@ -10,12 +10,13 @@ import { EntrevistaService } from './services/entrevista.service';
 import { EntrevistaRequest, EntrevistaResponse } from './models/entrevista.model';
 import { speak } from '../shared/utils/utils';
 import { AppointmentStateService } from '../shared/services/appointment.service';
+import { Timer } from '../shared/components/timer/timer';
 
 
 @Component({
   selector: 'app-entrevista',
   standalone: true,
-  imports: [CommonModule, Navbar, Header, Modal, FormsModule, Hipotese, Microphone],
+  imports: [CommonModule, Navbar, Header, Modal, FormsModule, Hipotese, Microphone, Timer],
   templateUrl: './entrevista.html',
   styleUrls: ['./entrevista.css']
 })
