@@ -5,6 +5,7 @@ import { Navbar } from '../navbar/navbar';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { AppointmentStateService } from '../../services/appointment.service';
+import Swiper from 'swiper/bundle';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +20,15 @@ export class Home {
   constructor(private router: Router, private http: HttpClient, private appointmentState: AppointmentStateService) {}
 
   ngOnInit() {}
+
+  ngAfterViewInit(){
+    new Swiper('.swiper', {
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true
+      }
+    });
+  }
 
   toggleNavbar(): void {
     this.navbar.toggle();
