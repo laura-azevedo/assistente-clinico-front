@@ -11,6 +11,8 @@ import { EntrevistaRequest, EntrevistaResponse } from './models/entrevista.model
 import { speak } from '../shared/utils/utils';
 import { AppointmentStateService } from '../shared/services/appointment.service';
 import { Timer } from '../shared/components/timer/timer';
+import { TimerGuardService } from '../shared/components/timer/guard/timerguard.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -31,13 +33,24 @@ export class Entrevista implements OnInit, AfterViewInit {
 
   constructor( 
     private entrevistaService: EntrevistaService, 
-    private appointmentState: AppointmentStateService
+    private appointmentState: AppointmentStateService,
+    private pageTimer: TimerGuardService,
+    private toastr: ToastrService
 ) {
   }
 
   ngOnInit() {}
 
   ngAfterViewInit() {
+    this.pageTimer.startTimer(() => {
+    this.openWindow = true;
+     this.toastr.error('Seu tempo acabou!', 'Atenção', {
+      positionClass: 'toast-top-right',
+      timeOut: 4000,
+    });
+
+  });
+
     this.microphone.send.subscribe((text: string) => {
       this.sendQuestion(text);
     });
@@ -87,5 +100,9 @@ export class Entrevista implements OnInit, AfterViewInit {
 
   armazenarResposta(resposta: string) {
     console.log('Usuário respondeu:', resposta);
+  }
+
+  ngOnDestroy() {
+    this.pageTimer.stopTimer();
   }
 }
