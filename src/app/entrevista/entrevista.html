@@ -11,8 +11,8 @@
     </div>
 
     <div class="flex-grow flex flex-col items-center justify-center gap-6 overflow-hidden px-4">
-
-<div class="flex w-full max-w-[860px] px-4 justify-between items-center">
+      
+      <div class="flex w-full max-w-[860px] justify-between items-center gap-4">
         <app-modal title="1. Entrevista" class="flex-1"> 
           <div *ngIf="interviewHistory.length === 0 && !waitingLLMResult" class="flex flex-col items-center justify-center h-full text-center px-4">
             <p class="text-[#0D334D] text-xl font-semibold">
@@ -30,26 +30,35 @@
             <p class="text-[#0D334D] text-3xl font-semibold animate-pulse">...</p>
           </div>
         </app-modal>
+
+        <button
+          class="bg-[#0D334D] text-white px-4 py-2 rounded text-sm hover:opacity-90  cursor-pointer"
+          (click)="openHypothesisModal()">
+          Encerrar Anamnese
+        </button>
+
         <div class="self-center">
           <app-microphone></app-microphone>
         </div>
       </div>
 
-      <div class="flex items-center gap-2 max-w-[700px] w-full px-4">
-        <input
-          class="flex-1 border rounded px-3 py-2"
-          type="text"
-          placeholder="Digite sua pergunta…"
-          [(ngModel)]="typedQuestion"
-          (keyup.enter)="sendTypedQuestion()"
-        />
-        <button 
-          class="bg-[#0D334D] text-white px-4 py-2 rounded"
-          (click)="sendTypedQuestion()">
-          Enviar
-        </button>
+      <div class="flex items-center w-[50%]">
+        <div class="flex items-center gap-2 max-w-[700px] w-full px-4">
+          <input
+            class="flex-1 border rounded px-3 py-2"
+            type="text"
+            placeholder="Digite sua pergunta…"
+            [(ngModel)]="typedQuestion"
+            (keyup.enter)="sendTypedQuestion()"
+          />
+          <button 
+            class="bg-[#0D334D] text-white px-4 py-2 rounded"
+            (click)="sendTypedQuestion()">
+            Enviar
+          </button>
+        </div>
       </div>
-
+      
       <app-hipotese 
         [isOpen]="openWindow" 
         (respostaEnviada)="armazenarResposta($event)">

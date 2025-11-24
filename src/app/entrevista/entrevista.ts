@@ -98,6 +98,10 @@ export class Entrevista implements OnInit, AfterViewInit {
     }
   }
 
+  openHypothesisModal(){
+    this.openWindow = true
+  }
+
   armazenarResposta(resposta: string) {
     console.log('Usuário respondeu:', resposta);
   }
