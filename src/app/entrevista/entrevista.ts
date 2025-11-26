@@ -64,17 +64,13 @@ export class Entrevista implements OnInit, AfterViewInit {
     }; 
 
     this.entrevistaService.enviarPergunta(payload).subscribe({
-      next: ({ textAnswer, finish }: EntrevistaResponse) => {
+      next: ({ textAnswer }: EntrevistaResponse) => {
         console.log('Resposta: ', textAnswer);
         this.interviewHistory.push({ question, answer: textAnswer });
         speak(textAnswer)
 
         this.waitingLLMResult = false;
 
-        if (finish) {
-          console.log('abriu')
-          this.openWindow = true;
-        }
       },
       error: err => {
         console.error('Erro - HTTP:', err);

@@ -5,5 +5,4 @@ export interface EntrevistaRequest {
 
 export interface EntrevistaResponse {
   textAnswer: string;
-  finish: boolean;
 }
