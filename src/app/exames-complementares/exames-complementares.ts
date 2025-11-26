@@ -47,6 +47,10 @@ export class ExamesComplementares implements AfterViewInit {
     this.navbar.toggle();
   }
 
+  startMic(){
+    this.microphone.startListening();
+  }
+
   submitExamInput() {
     const exam = this.examInput.trim();
     if (!exam) return;
