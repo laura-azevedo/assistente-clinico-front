@@ -24,7 +24,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class Entrevista implements OnInit, AfterViewInit {
   @ViewChild(Navbar) navbar!: Navbar;
-  @ViewChild(Microphone) microphone!: Microphone;
 
   public openWindow = false;
   public typedQuestion: string = '';
@@ -36,8 +35,7 @@ export class Entrevista implements OnInit, AfterViewInit {
     private appointmentState: AppointmentStateService,
     private pageTimer: TimerGuardService,
     private toastr: ToastrService
-) {
-  }
+  ) {}
 
   ngOnInit() {}
 
@@ -49,10 +47,6 @@ export class Entrevista implements OnInit, AfterViewInit {
       timeOut: 4000,
     });
 
-  });
-
-    this.microphone.send.subscribe((text: string) => {
-      this.sendQuestion(text);
     });
   }
 

@@ -12,13 +12,14 @@
 
     <div class="flex-grow flex flex-col items-center justify-center gap-6 overflow-hidden px-4">
       
-      <div class="flex w-full max-w-[860px] justify-between items-center gap-4">
-        <app-modal title="1. Entrevista" class="flex-1"> 
+      <div class="relative w-full max-w-[860px]">
+        
+        <app-modal title="1. Entrevista" class="w-full"> 
           <div *ngIf="interviewHistory.length === 0 && !waitingLLMResult" class="flex flex-col items-center justify-center h-full text-center px-4">
             <p class="text-[#0D334D] text-xl font-semibold">
               Clique no microfone ou digite algo para começar o atendimento
             </p>
-            <p>Para finalizar a entrevista, diga ou escreva "Encerrar atendimento".</p>
+            <p>Para finalizar a entrevista, clique no botão "Encerrar anamese".</p>
           </div>
 
           <div *ngFor="let item of interviewHistory" class="bg-white rounded-lg p-4 shadow mb-4">
@@ -30,33 +31,43 @@
             <p class="text-[#0D334D] text-3xl font-semibold animate-pulse">...</p>
           </div>
         </app-modal>
-
+        
         <button
-          class="bg-[#0D334D] text-white px-4 py-2 rounded text-sm hover:opacity-90  cursor-pointer"
+          class="hidden md:block absolute top-1/2 right-0 transform -translate-y-1/2 bg-[#0D334D] text-white px-4 py-2 rounded text-sm hover:opacity-90 cursor-pointer md:right-[-120px] lg:right-[-150px]"
           (click)="openHypothesisModal()">
           Encerrar Anamnese
         </button>
-
-        <div class="self-center">
-          <app-microphone></app-microphone>
-        </div>
       </div>
+      <div class="flex items-center w-full max-w-[860px] gap-4 justify-center px-4">
 
-      <div class="flex items-center w-[50%]">
-        <div class="flex items-center gap-2 max-w-[700px] w-full px-4">
+        <div class="flex items-center w-[80%] gap-2 bg-gray-200 dark:bg-zinc-800 rounded-xl px-4 py-2">
           <input
-            class="flex-1 border rounded px-3 py-2"
             type="text"
+            class="flex-1 bg-transparent outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500"
             placeholder="Digite sua pergunta…"
             [(ngModel)]="typedQuestion"
-            (keyup.enter)="sendTypedQuestion()"
-          />
-          <button 
-            class="bg-[#0D334D] text-white px-4 py-2 rounded"
-            (click)="sendTypedQuestion()">
-            Enviar
-          </button>
+            (keyup.enter)="sendTypedQuestion()"/>
+
+          <div class="flex items-center gap-2">
+            <div class="relative group">
+              <app-microphone class="w-10 h-10" (send)="sendQuestion($event)"></app-microphone>
+            </div>
+
+            <button
+              type="button"
+              class="w-8 h-8 flex items-center justify-center rounded-full transition bg-gray-300 text-white shadow hover:bg-gray-400"
+              (click)="sendTypedQuestion()"
+              >
+              <img src="/assets/send-icon.svg" class="w-6 h-6 cursor-pointer"/>
+            </button>
+          </div>
         </div>
+        
+        <button
+          class="bg-[#0D334D] text-white px-4 py-2 rounded text-sm hover:opacity-90 cursor-pointer md:hidden"
+          (click)="openHypothesisModal()">
+          Encerrar Anamnese
+        </button>
       </div>
       
       <app-hipotese 

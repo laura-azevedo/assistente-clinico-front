@@ -1,9 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, NgZone, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-microphone',
   templateUrl: './microphone.html',
-  styleUrls: ['./microphone.css']
+  styleUrls: ['./microphone.css'],
+  imports: [CommonModule]
 })
 export class Microphone {
   @Output() send = new EventEmitter<string>();

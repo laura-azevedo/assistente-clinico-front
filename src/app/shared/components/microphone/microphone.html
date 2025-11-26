@@ -1,9 +1,21 @@
-<div class="flex items-center justify-center gap-4 ml-4">
-  <img
-    src="/assets/microphone-icon.svg"
-    class="w-10 h-10 cursor-pointer flex-shrink-0"
-    [class.animate-pulse]="isListening"
-    (click)="startListening()"
-    title="Clique para falar"
-  />
+<div>
+  <ng-container *ngIf="!isListening; else recordingIcon">
+    <img
+      src="/assets/microphone-icon.svg"
+      class="cursor-pointer flex-shrink-0 w-8 h-8"
+      (click)="startListening()"
+      title="Clique para falar"/>
+  </ng-container>
+
+  <ng-template #recordingIcon>
+    <div 
+      class="relative flex items-center justify-center cursor-pointer"
+      (click)="startListening()">
+
+      <div class="absolute w-6 h-6 rounded-full bg-red-300 opacity-40 animate-ping"></div>
+
+      <div class="w-3 h-3 rounded-full bg-red-600"></div>
+    </div>
+  </ng-template>
+
 </div>

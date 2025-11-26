@@ -21,7 +21,6 @@ export function getProgressColor(percentage: number): string {
   const progressRatio = 1 - percentage / 100;
 
   const colorInterpolator = interpolateRgb(startColor, endColor);
-  console.log('COLOR INTERPOLATOR: ', colorInterpolator)
 
   return colorInterpolator(progressRatio); 
 }
