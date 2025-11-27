@@ -1,5 +1,9 @@
 [
   {
+    "name":"troponina",
+    "description": "Troponina I: Valor sérico do paciente: 0,01 ng/mL (Valor de referência até 0,03 ng/mL).\nTroponina T: Valor sérico do paciente: 0,05 ng/mL (Valor de referência até 0,1 ng/mL).\nTroponina de alta sensibilidade: Valor sérico do paciente: 33 ng/L (Valor de referência até 14 ng/L)."
+  },
+  {
     "name": "troponina i",
     "description": "Valor sérico do paciente: 0,01 ng/mL (Valor de referência até 0,03 ng/mL)."
   },
@@ -8,7 +12,7 @@
     "description": "Valor sérico do paciente: 0,05 ng/mL (Valor de referência até 0,1 ng/mL)."
   },
   {
-    "name": "troponina alta sensibilidade",
+    "name": "troponina alta sensibilidade", 
     "description": "Valor sérico do paciente: 33 ng/L (Valor de referência até 14 ng/L)."
   },
   {
@@ -43,18 +47,13 @@
     "name": "gasometria",
     "description": "Gasometria arterial ou venosa dentro da normalidade."
   },
-  {
+  { 
     "name": "eletrocardiograma",
     "image": "/assets/exames/eletro.png",
     "description": "Ritmo sinusal, supradesnível de segmento ST entre V2 e V6, DI e aVL (infarto anterior extenso). Infradesnível de ST em DIII e aVF. Taquicardia ventricular não sustentada entre DIII e aVF."
   },
   {
     "name": "radiografia",
-    "image": "/assets/exames/radiografiatorax.png",
-    "description": "Radiografia de tórax disponível."
-  },
-  {
-    "name": "radiografia de tórax",
     "image": "/assets/exames/radiografiatorax.png",
     "description": "Radiografia de tórax disponível."
   }

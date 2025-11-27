@@ -27,7 +27,7 @@ export class ExamesComplementares implements AfterViewInit {
   examInput = '';
   isOpened = false;
   history: ExameComplementar[] = [];
-  enabledButton = false;
+  // enabledButton = false;
 
   examesData = examesDataImported as ExameComplementar[];
 
@@ -60,7 +60,7 @@ export class ExamesComplementares implements AfterViewInit {
   }
 
   private normalizeKey(s: string): string {
-    return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+    return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\.+$/g, '').toLowerCase().trim();
   }
 
   private hasReachedExamLimit(): boolean {
@@ -73,14 +73,14 @@ export class ExamesComplementares implements AfterViewInit {
     return this.history.some(item => this.normalizeKey(item.name) === normalizedExam);
   }
 
-  private findExamInJson(exam: string): ExameComplementar | undefined {
-    const normalizedExam = this.normalizeKey(exam);
-    return this.examesData.find(e => this.normalizeKey(e.name) === normalizedExam);
-  }
+  // private findExamInJson(exam: string): ExameComplementar | undefined {
+  //   const normalizedExam = this.normalizeKey(exam);
+  //   return this.examesData.find(e => this.normalizeKey(e.name) === normalizedExam);
+  // }
 
   private addExamToHistory(exam: ExameComplementar) {
     this.history.push(exam);
-    this.updateEnabledButton();
+    // this.updateEnabledButton();
   }
 
   private sendExamToBackend(exam: ExameComplementar) {
@@ -101,11 +101,60 @@ export class ExamesComplementares implements AfterViewInit {
     });
   }
 
-  private updateEnabledButton() {
-    const validExamsCount = this.history.filter(
-      item => item.description && item.description !== 'Exame não reconhecido.'
-    ).length;
-    this.enabledButton = validExamsCount > 0;
+  // private updateEnabledButton() {
+  //   const validExamsCount = this.history.filter(
+  //     item => item.description && item.description !== 'Exame não reconhecido.'
+  //   ).length;
+  //   this.enabledButton = validExamsCount > 0;
+  // }
+
+  private findExamInText(input: string): ExameComplementar | undefined {
+  const inputWords = this.getNormalizedWords(input);
+  console.log('INPUT WORDS: ', inputWords)
+  if (inputWords.length === 0) return undefined;
+
+  const matchedExams = this.examesData.filter(exam => 
+    this.isExamInInput(exam, inputWords)
+  );
+
+  console.log('MATCHED EXAMS: ', matchedExams)
+
+  if (matchedExams.length === 0) return undefined;
+
+  return this.getMostSpecificExam(matchedExams);
+}
+
+  private getNormalizedWords(text: string): string[] {
+    return this.normalizeKey(text)
+              .split(/\s+/)
+              .filter(word => word.length > 0);
+  }
+
+  private isExamInInput(exam: ExameComplementar, inputWords: string[]): boolean {
+    const examWords = this.getNormalizedWords(exam.name);
+    return this.isOrderedSubsequence(examWords, inputWords);
+  }
+
+  private isOrderedSubsequence(examWords: string[], inputWords: string[]): boolean {
+    if (examWords.length === 0) return false;
+
+    let currentInputIndex = -1;
+
+    return examWords.every(examWord => {
+      const foundIndex = inputWords.indexOf(examWord, currentInputIndex + 1);
+      if (foundIndex === -1) return false;
+      currentInputIndex = foundIndex;
+      return true;
+    });
+  }
+
+  private getMostSpecificExam(exams: ExameComplementar[]): ExameComplementar {
+    console.log('EXAMES - getMostSpecificExam: ', exams)
+    return exams.reduce((prev, curr) => {
+      const prevLength = prev.name.split(/\s+/).length;
+      const currLength = curr.name.split(/\s+/).length;
+      return currLength > prevLength ? curr : prev;
+    });
   }
 
 
@@ -120,7 +169,8 @@ export class ExamesComplementares implements AfterViewInit {
       return;
     }
 
-    const info = this.findExamInJson(exam);
+    // const info = this.findExamInJson(exam);
+    const info = this.findExamInText(exam);
 
     const exame: ExameComplementar = {
       name: exam,
