@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Microphone } from '../shared/components/microphone/microphone';
+// import { Microphone } from '../shared/components/microphone/microphone';
 import { HipoteseService } from './services/hipotese.service';
 import { HipoteseRequest } from './models/hipotese.model';
 import { speak } from '../shared/utils/utils';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-hipotese',
   standalone: true,
-  imports: [CommonModule, FormsModule, Microphone],
+  imports: [CommonModule, FormsModule],
   templateUrl: './hipotese.html',
   styleUrls: ['./hipotese.css']
 })
@@ -21,7 +21,7 @@ export class Hipotese {
   @Output() closed = new EventEmitter<void>();
   @Output() respostaEnviada = new EventEmitter<string>();
   
-  @ViewChild(Microphone) microphone!: Microphone;
+  // @ViewChild(Microphone) microphone!: Microphone;
 
   hipotese: string = '';
   answerLLM: string = '';
@@ -30,10 +30,10 @@ export class Hipotese {
 
   constructor(private hipoteseService: HipoteseService, private router: Router) {}
 
-  onMicrophoneResult(text: string) {
-    console.log('texto: ', text)
-    this.hipotese = text;
-  }
+  // onMicrophoneResult(text: string) {
+  //   console.log('texto: ', text)
+  //   this.hipotese = text;
+  // }
 
   private handleIntermediatePhase() {
     this.answerLLM = 'Sua resposta foi salva. A avaliação final ocorrerá após a etapa 3.';
