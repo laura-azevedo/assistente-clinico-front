@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { Navbar } from '../shared/components/navbar/navbar';
 import { Header } from '../shared/components/header/header';
 import { Modal } from '../modal/modal';
@@ -15,20 +15,31 @@ import { PhysicalExamService } from './services/exames.service';
   templateUrl: './exames.html',
   styleUrls: ['./exames.css']
 })
-export class Exames {
+export class Exames implements AfterViewChecked {
   @ViewChild(Navbar) navbar!: Navbar;
 
-  isOpened = false;
+  @ViewChild('messagesContainer') messagesContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('bottomAnchor') bottomAnchor!: ElementRef<HTMLDivElement>;
 
+  isOpened = false;
   messages: string[] = [];
   enableButton = false;
+
+  private shouldScroll = false;
 
   examesData = examesData as Record<string, ExameInfo>;
   
   constructor(
     private appointmentState: AppointmentStateService,
     private physicalExamService: PhysicalExamService
-  ){}
+  ) {}
+
+  ngAfterViewChecked(): void {
+    if (this.shouldScroll) {
+      this.scrollToBottom();
+      this.shouldScroll = false;
+    }
+  }
 
   toggleNavbar(): void {
     this.navbar.toggle();
@@ -38,6 +49,14 @@ export class Exames {
     this.isOpened = true;
   }
 
+  private scrollToBottom() {
+    if (!this.bottomAnchor) return;
+
+    this.bottomAnchor.nativeElement.scrollIntoView({
+      behavior: 'smooth'
+    });
+  }
+
   clickExame(exame: string) {
     const key = exame.trim().toLowerCase();
     const info: ExameInfo = this.examesData[key];
@@ -45,8 +64,9 @@ export class Exames {
     this.enableButton = true;
 
     this.messages.push(`Exame selecionado: ${exame}`);
-
     this.messages.push(info.mensagem);
+
+    this.shouldScroll = true;
 
     if (info.audio) {
       const audio = new Audio(`${info.audio}`);
@@ -68,6 +88,5 @@ export class Exames {
     } else {
       console.error('appointment_id não definido (AppointmentStateService)');
     }
-  
   }
 }

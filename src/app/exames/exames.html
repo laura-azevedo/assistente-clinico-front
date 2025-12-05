@@ -45,13 +45,15 @@
             ></div>
           </div>
 
-          <div *ngIf="messages.length > 0" class="space-y-2 mt-4 w-full px-4">
-            <div
-              *ngFor="let msg of messages"
+          <div #messagesContainer *ngIf="messages.length > 0" class="space-y-2 mt-4 w-full px-4">
+            <div 
+              *ngFor="let msg of messages" 
               class="text-sm text-blue-900 bg-white p-2 rounded shadow"
             >
               {{ msg }}
             </div>
+
+            <div #bottomAnchor></div>
           </div>
         </app-modal> 
 
@@ -69,7 +71,7 @@
       <app-hipotese
         [isOpen]="isOpened"
         [fase]="'exames'"
-        >
+      >
       </app-hipotese>
 
     </div>
