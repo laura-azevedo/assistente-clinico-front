@@ -21,8 +21,6 @@ export class Hipotese {
   @Output() closed = new EventEmitter<void>();
   @Output() respostaEnviada = new EventEmitter<string>();
   
-  // @ViewChild(Microphone) microphone!: Microphone;
-
   hipotese: string = '';
   answerLLM: string = '';
   isAnswerSaved: boolean = false;
@@ -30,10 +28,6 @@ export class Hipotese {
 
   constructor(private hipoteseService: HipoteseService, private router: Router) {}
 
-  // onMicrophoneResult(text: string) {
-  //   console.log('texto: ', text)
-  //   this.hipotese = text;
-  // }
 
   private handleIntermediatePhase() {
     this.answerLLM = 'Sua resposta foi salva. A avaliação final ocorrerá após a etapa 3.';
@@ -58,7 +52,7 @@ export class Hipotese {
     this.hipoteseService.avaliarHipoteseFinal(payload).subscribe({
       next: (res) => {
         this.answerLLM = res.comment;
-        speak(res.comment);
+        speak(res.globalAnalysis);
         this.isLoading = false;
       },
       error: (err) => {

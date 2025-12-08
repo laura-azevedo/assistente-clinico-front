@@ -49,12 +49,10 @@
   },
   { 
     "name": "eletrocardiograma",
-    "image": "/assets/exames/eletro.png",
-    "description": "Ritmo sinusal, supradesnível de segmento ST entre V2 e V6, DI e aVL (infarto anterior extenso). Infradesnível de ST em DIII e aVF. Taquicardia ventricular não sustentada entre DIII e aVF."
+    "image": "/assets/exames/eletro.png"
   },
   {
     "name": "radiografia",
-    "image": "/assets/exames/radiografiatorax.png",
-    "description": "Radiografia de tórax disponível."
+    "image": "/assets/exames/radiografiatorax.png"
   }
 ]

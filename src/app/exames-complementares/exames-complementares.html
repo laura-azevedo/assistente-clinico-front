@@ -5,15 +5,25 @@
     <app-header (menuClick)="toggleNavbar()"></app-header>
 
     <div class="flex-grow flex flex-col items-center justify-center gap-6 overflow-hidden">
-
+      
       <div class="flex items-center w-full max-w-[860px] px-4">
         <div class="flex-1">
           <app-modal title="3. Exames Complementares"> 
-             <div *ngIf="history.length === 0" class="flex flex-col items-center justify-center h-full text-center px-4">
-              <p class="text-[#0D334D] text-xl font-semibold">
-                Fale pelo microfone ou digite o nome do exame
-              </p>
+            <div *ngIf="history.length === 0" class="flex flex-col h-full text-center">
+
+              <div class="font-semibold text-[#FF0000]">
+                <p>ATENÇÃO: Solicite APENAS UM exame de cada vez. Você poderá pedir por até 5 exames no total.</p>
+              </div>
+
+              <div class="flex-1 flex items-center justify-center">
+                <p class="text-[#0D334D] text-xl font-semibold">
+                  Fale pelo microfone ou digite o nome do exame
+                </p>
+              </div>
+
             </div>
+
+
             <div *ngFor="let item of history" class="bg-white rounded-lg p-4 shadow mb-4">
               <p class="text-[#0D334D] font-semibold">Exame: {{ item.name }}</p>
               <p class="mt-1 whitespace-pre-wrap">{{ item.description }}</p>

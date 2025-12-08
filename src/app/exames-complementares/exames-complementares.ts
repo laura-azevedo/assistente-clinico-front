@@ -27,7 +27,6 @@ export class ExamesComplementares implements AfterViewInit {
   examInput = '';
   isOpened = false;
   history: ExameComplementar[] = [];
-  // enabledButton = false;
 
   examesData = examesDataImported as ExameComplementar[];
 
@@ -55,8 +54,8 @@ export class ExamesComplementares implements AfterViewInit {
     const exam = this.examInput.trim();
     if (!exam) return;
 
-    this.processExamRequest(exam);
     this.examInput = '';
+    this.processExamRequest(exam);
   }
 
   private normalizeKey(s: string): string {
@@ -65,7 +64,7 @@ export class ExamesComplementares implements AfterViewInit {
 
   private hasReachedExamLimit(): boolean {
     const validExams = this.history.filter(item => item.description !== 'Exame não reconhecido.');
-    return validExams.length >= 4;
+    return validExams.length >= 5;
   }
 
   private isDuplicateExam(exam: string): boolean {
@@ -73,14 +72,8 @@ export class ExamesComplementares implements AfterViewInit {
     return this.history.some(item => this.normalizeKey(item.name) === normalizedExam);
   }
 
-  // private findExamInJson(exam: string): ExameComplementar | undefined {
-  //   const normalizedExam = this.normalizeKey(exam);
-  //   return this.examesData.find(e => this.normalizeKey(e.name) === normalizedExam);
-  // }
-
   private addExamToHistory(exam: ExameComplementar) {
     this.history.push(exam);
-    // this.updateEnabledButton();
   }
 
   private sendExamToBackend(exam: ExameComplementar) {
@@ -100,13 +93,6 @@ export class ExamesComplementares implements AfterViewInit {
       error: err => console.error('Erro ao salvar exame complementar:', err)
     });
   }
-
-  // private updateEnabledButton() {
-  //   const validExamsCount = this.history.filter(
-  //     item => item.description && item.description !== 'Exame não reconhecido.'
-  //   ).length;
-  //   this.enabledButton = validExamsCount > 0;
-  // }
 
   private findExamInText(input: string): ExameComplementar | undefined {
   const inputWords = this.getNormalizedWords(input);
@@ -160,7 +146,7 @@ export class ExamesComplementares implements AfterViewInit {
 
   private processExamRequest(exam: string) {
     if (this.hasReachedExamLimit()) {
-      alert('Você já solicitou o máximo de 4 exames.');
+      alert('Você já solicitou o máximo de 5 exames.');
       return;
     }
 
@@ -169,17 +155,19 @@ export class ExamesComplementares implements AfterViewInit {
       return;
     }
 
-    // const info = this.findExamInJson(exam);
     const info = this.findExamInText(exam);
 
     const exame: ExameComplementar = {
       name: exam,
-      description: info?.description ?? 'Exame não reconhecido.',
+      description: info === undefined 
+                ? 'Exame não reconhecido.'
+                : info.description,
       image: info?.image
     };
 
+
     this.addExamToHistory(exame);
-    speak(exame.description);
+    if (exame.description != null) speak(exame.description);
     this.sendExamToBackend(exame);
   }
 

@@ -6,4 +6,5 @@ export interface HipoteseRequest {
 
 export interface HipoteseResponse {
   comment: string;
+  globalAnalysis: string;
 }
