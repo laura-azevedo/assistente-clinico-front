@@ -167,7 +167,7 @@ export class ExamesComplementares implements AfterViewInit {
 
 
     this.addExamToHistory(exame);
-    if (exame.description != null) speak(exame.description);
+    // if (exame.description != null) speak(exame.description);
     this.sendExamToBackend(exame);
   }
 
