@@ -44,6 +44,18 @@
     "description": "Potássio sérico dentro da normalidade."
   },
   {
+    "name": "glicemia",
+    "description": "Glicemia/Glicose dentro da normalidade."
+  },
+  {
+    "name": "glicose",
+    "description": "Glicemia/Glicose dentro da normalidade."
+  },
+  {
+    "name": "bioquímica",
+    "description": "Os exames de glicose, sódio, potássio, ureia e creatinina estão dentro da normalidade."
+  },
+  {
     "name": "gasometria",
     "description": "Gasometria arterial ou venosa dentro da normalidade."
   },
