@@ -51,6 +51,10 @@
     "name": "eletrocardiograma",
     "image": "/assets/exames/eletro.png"
   },
+  { 
+    "name": "ecg",
+    "image": "/assets/exames/eletro.png"
+  },
   {
     "name": "radiografia",
     "image": "/assets/exames/radiografiatorax.png"
